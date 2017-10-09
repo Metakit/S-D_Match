@@ -26,8 +26,8 @@ public class Match {
 	private ArrayList<Student> students;
 	private ArrayList<Department> departments;
 	private InputBean bean;
-	
-	
+	private OutputBean bean2;
+
 	//读取输入txt文件
 	public String getInputString(String path){
 		StringBuffer sb = new StringBuffer();
@@ -69,6 +69,7 @@ public class Match {
 				outputBean.getAdmitted().add(admittedBean);
 			}
 		}
+		this.bean2 = outputBean;
 		String output_data = gson.toJson(outputBean);
 		File file = new File("output_data.txt"); 
         try {
@@ -157,26 +158,7 @@ public class Match {
         list.set(i, index);
         sortDepartment(list, low, i - 1);
         sortDepartment(list, i + 1, hight);
-
     }
-	
-	//快排
-	/*public void quickSort(List<Student> list1, List<Department> list2 , int p) {
-        sortStudent(list1, 0, list1.size() - 1);
-        //sortDepartment(list2, 0, list2.size() - 1);
-    }*/
-	
-	/*public boolean sMoreThenD(){
-		int d = 0;
-		for(int i=0;i<departments.size();i++){
-			d+=departments.get(i).getLimit();
-		}
-		if(students.size()>d){
-			return true;
-		}else {
-			return false;
-		}
-	}*/
 	
 	//统计学生在各部门的分数
 	public void countStudentScore(){
@@ -261,18 +243,25 @@ public class Match {
 					String no = departments.get(i).getId();
 					if(wills.equals(no)){
 						//符合志愿条件，根据符合分数进行分配
-						if(students.get(k).getScores().get(i)>0){
-							departments.get(i).getMembers().add(students.get(k));
-							students.get(k).setFlag(1);
-							num++;
-						}
+						departments.get(i).getMembers().add(students.get(k));
+						students.get(k).setFlag(1);
+						num++;
 					}
 				}
 				if(flag==1) break;
-				
 			}
 			departments.get(i).setNum(num);
 		}
+		for(int i=0;i<departments.size();i++){
+			for(int p=0;p<departments.get(i).getMembers().size()-1;p++){
+			    for(int j=departments.get(i).getMembers().size()-1;j>p;j--){
+			      if(departments.get(i).getMembers().get(j).equals(departments.get(i).getMembers().get(p))){
+			    	  departments.get(i).getMembers().remove(j);
+			      } 
+			    } 
+			}
+	
+		} 
 	}
 	
 	public ArrayList<Student> getStudents() {
@@ -297,6 +286,22 @@ public class Match {
 
 	public void setBean(InputBean bean) {
 		this.bean = bean;
+	}
+	
+	public OutputBean getBean2() {
+		return bean2;
+	}
+
+	public void setBean2(OutputBean bean2) {
+		this.bean2 = bean2;
+	}
+	
+	public int getAdmittedStudentsNumber(){
+		int num = 0;
+		for(int i=0;i<bean2.getAdmitted().size();i++){
+			num+=bean2.getAdmitted().get(i).getMember().size();
+		}
+		return num;
 	}
 	
 }

@@ -22,22 +22,33 @@ public class DataMaker {
 		for(int i=0;i<20;i++){
 			DepartmentsBean departmentsBean = new DepartmentsBean();
 			departmentsBean.setDepartment_no(departmentID[i]);
-			departmentsBean.setMember_limit(random.nextInt()%6+10);
-			int tagsNum = random.nextInt()%4;
+			int memberNum = random.nextInt()%6;
+			if(memberNum<0) memberNum*=-1;
+			memberNum+=10;
+			departmentsBean.setMember_limit(memberNum);
+			
+			int tagsNum = random.nextInt()%6;
 			if(tagsNum<0) tagsNum*=-1;
 			tagsNum+=2;
-			int tagsCatagory = random.nextInt()%6;
-			if(tagsCatagory<0) tagsCatagory*=-1;
 			int timesNum = random.nextInt()%5;
 			if(timesNum<0) timesNum*=-1;
 			timesNum++;
 			ArrayList<String> list = new ArrayList<>();
 			ArrayList<String> list2 = new ArrayList<>();
 			for(int j=0;j<tagsNum;j++){
-				list.add(departmentTags[tagsCatagory+j]);
+				int tagsCatagory = random.nextInt()%10;
+				if(tagsCatagory<0) tagsCatagory*=-1;
+				list.add(departmentTags[tagsCatagory]);
 			}
+			for(int p=0;p<list.size()-1;p++){
+			    for(int j=list.size()-1;j>p;j--){
+			      if(list.get(j).equals(list.get(p))){
+			        list.remove(j);
+			      } 
+			    } 
+			 } 
 			for(int k=0;k<timesNum;k++){
-				int time = random.nextInt()%13;
+				int time = random.nextInt()%10;
 				if(time<0) time*=-1;
 				time+=9;
 				int timesCatagory = random.nextInt()%7;
@@ -52,35 +63,57 @@ public class DataMaker {
 			StudentsBean studentsBean = new StudentsBean();
 			studentsBean.setStudent_no("031502"+(i+100));
 			int appCount = random.nextInt()%6;
-			int a = random.nextInt()%10;
-			if(a<0) a*=-1;
-			int timesNum = random.nextInt()%5;
+			if(appCount<0) appCount*=-1;
+			int timesNum = random.nextInt()%8;
 			if(timesNum<0) timesNum*=-1;
 			timesNum++;
 			int tagsNum = random.nextInt()%4;
 			if(tagsNum<0) tagsNum*=-1;
 			tagsNum+=2;
-			int tagsCatagory = random.nextInt()%6;
-			if(tagsCatagory<0) tagsCatagory*=-1;
 			ArrayList<String> list1 = new ArrayList<>();
 			ArrayList<String> list2 = new ArrayList<>();
 			ArrayList<String> list3 = new ArrayList<>();
 			for(int j=0;j<appCount;j++){
-				list1.add(departmentID[a+j*2]);
+				int a = random.nextInt()%20;
+				if(a<0) a*=-1;
+				list1.add(departmentID[a]);
 			}
+			for(int p=0;p<list1.size()-1;p++){
+			    for(int j=list1.size()-1;j>p;j--){
+			      if(list1.get(j).equals(list1.get(p))){
+			        list1.remove(j);
+			      } 
+			    } 
+			 } 
 			studentsBean.setApplications_department(list1);
 			for(int k=0;k<timesNum;k++){
-				int time = random.nextInt()%13;
+				int time = random.nextInt()%10;
 				if(time<0) time*=-1;
 				time+=9;
 				int timesCatagory = random.nextInt()%7;
 				if(timesCatagory<0) timesCatagory*=-1;
 				list2.add(departmentTimes[timesCatagory]+"."+time+":00~"+(time+1)+":00");
 			}
+			for(int p=0;p<list2.size()-1;p++){
+			    for(int j=list2.size()-1;j>p;j--){
+			      if(list2.get(j).equals(list2.get(p))){
+			        list2.remove(j);
+			      } 
+			    } 
+			 } 
 			studentsBean.setFree_time(list2);
 			for(int p=0;p<tagsNum;p++){
-				list3.add(departmentTags[tagsCatagory+p]);
+				int tagsCatagory = random.nextInt()%10;
+				if(tagsCatagory<0) tagsCatagory*=-1;
+				list3.add(departmentTags[tagsCatagory]);
 			}
+			for(int p=0;p<list3.size()-1;p++){
+			    for(int j=list3.size()-1;j>p;j--){
+			      if(list3.get(j).equals(list3.get(p))){
+			        list3.remove(j);
+			      } 
+			    } 
+			 } 
 			studentsBean.setTags(list3);
 			studentsBeans.add(studentsBean);
 		}
